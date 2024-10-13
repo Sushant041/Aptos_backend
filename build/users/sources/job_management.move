@@ -238,9 +238,8 @@ module my_adr::job_management {
         else{            
             let user_balance = user_registry::get_user_balance(signer_address);
 
-            // Add 0.0025 APT (25 Octas) to the user balance. 
-            // Since 1 APT = 10^8 Octas, 25/10000 APT = 25_000 Octas
-            let additional_balance: u64 = 25_000_000; // 25 Octas
+            // Add 0.05 APT to the user balance. 
+            let additional_balance: u64 = 5000000; 
             user_balance = user_balance + additional_balance;
 
             // Update the user's balance in the registry

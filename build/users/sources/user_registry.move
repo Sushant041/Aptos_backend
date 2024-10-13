@@ -17,7 +17,7 @@ module my_adr::user_registry {
     const ROLE_WORKER: u64 = 2;
 
     // Minimum withdrawal amount (0.02 APT in Octas, 1 APT = 10^8 Octas)
-    const MINIMUM_WITHDRAWAL_AMOUNT: u64 = 2000000; // 0.02 APT
+    const MINIMUM_WITHDRAWAL_AMOUNT: u64 = 20000000; // 0.02 APT
 
 
     // Struct to store individual user data
