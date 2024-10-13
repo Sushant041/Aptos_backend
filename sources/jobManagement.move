@@ -193,16 +193,20 @@ module my_adr::job_management {
         let correct_answer_length = vector::length(&correct_answer);
 
         let ban = false;
-        
+
         if (correct_answer_length > 0) {
-            if(correct_answer_length < vector::length(&chosen_option)){
-                ban = true;
-            }
-            else{
+            if (correct_answer_length < vector::length(&chosen_option)) {
+                ban = true;  // If chosen_option has more elements than correct_answer, ban.
+            } else {
                 let i = 0;
-                while (!ban && i < correct_answer_length) {
-                    if(vector::borrow(&chosen_option, i) != vector::borrow(&correct_answer, i)){
-                        ban = true;
+
+                // Iterate through all elements of chosen_option
+                while (!ban && i < vector::length(&chosen_option)) {
+                    let chosen_element = vector::borrow(&chosen_option, i);
+
+                    // Check if the element exists in correct_answer
+                    if (!vector::contains(&correct_answer, chosen_element)) {
+                        ban = true;  // If an element is not found, set ban to true.
                         break
                     };
                     i = i + 1;
