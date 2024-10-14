@@ -214,32 +214,32 @@ module my_adr::job_management {
             }
         };
 
-        // Update the task pick count
-        let task_pick_count_ref = &mut job.task_pick_count;
-        assert!(task_id > 0, E_INVALID_TASK_ID); // Prevent out-of-bounds issue
-        let task_picks = vector::borrow_mut(task_pick_count_ref, task_id - 1);  // Zero-index correction for task_id
-        *task_picks = *task_picks + 1;
-
-        // Add worker to task's picked_by and store chosen answer
-        user_registry::job_completed_worker(signer_address);
-        vector::push_back(&mut task.picked_by, signer_address);
-        vector::push_back(&mut task.task_answers, chosen_option);
-        print(&string::utf8(b"printing picked by"));
-        print(&task.picked_by);
-        if(num_picked + 1 == task.max_workers){
-            print(&string::utf8(b"task completed"));
-            task.completed = true;
-            job.completed_tasks = job.completed_tasks + 1;
-            print(task);
-        };
-        if(job.completed_tasks == job.task_counter){
-            job.is_completed = true;
-            user_registry::job_completed_creator(job.creator);
-        };
         if(ban == true){
             user_registry::update_reputation(signer_address);
         }
-        else{            
+        else{
+            // Update the task pick count
+            let task_pick_count_ref = &mut job.task_pick_count;
+            assert!(task_id > 0, E_INVALID_TASK_ID); // Prevent out-of-bounds issue
+            let task_picks = vector::borrow_mut(task_pick_count_ref, task_id - 1);  // Zero-index correction for task_id
+            *task_picks = *task_picks + 1;
+
+            // Add worker to task's picked_by and store chosen answer
+            user_registry::job_completed_worker(signer_address);
+            vector::push_back(&mut task.picked_by, signer_address);
+            vector::push_back(&mut task.task_answers, chosen_option);
+            print(&string::utf8(b"printing picked by"));
+            print(&task.picked_by);
+            if(num_picked + 1 == task.max_workers){
+                print(&string::utf8(b"task completed"));
+                task.completed = true;
+                job.completed_tasks = job.completed_tasks + 1;
+                print(task);
+            };
+            if(job.completed_tasks == job.task_counter){
+                job.is_completed = true;
+                user_registry::job_completed_creator(job.creator);
+            };          
             let user_balance = user_registry::get_user_balance(signer_address);
 
             // Add 0.05 APT to the user balance. 
